@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>Shipl API Reference</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -226,216 +226,81 @@
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
           </li>
           <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="Kittens">Kittens</a>
+            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
+          </li>
+          <li>
+            <a href="#general" class="toc-h1 toc-link" data-title="General">General</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="Get All Kittens">Get All Kittens</a>
+                    <a href="#request-phone-verification" class="toc-h2 toc-link" data-title="Request phone verification">Request phone verification</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Get a Specific Kitten">Get a Specific Kitten</a>
+                    <a href="#verify-and-request-token" class="toc-h2 toc-link" data-title="Verify and Request Token">Verify and Request Token</a>
                   </li>
                   <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Delete a Specific Kitten">Delete a Specific Kitten</a>
+                    <a href="#create-proxy-contract-for-you-users" class="toc-h2 toc-link" data-title="Create proxy contract for you users">Create proxy contract for you users</a>
+                  </li>
+                  <li>
+                    <a href="#lookup-for-user-proxy-contracts" class="toc-h2 toc-link" data-title="Lookup for user proxy contracts">Lookup for user proxy contracts</a>
+                  </li>
+                  <li>
+                    <a href="#relay-meta-transaction" class="toc-h2 toc-link" data-title="Relay meta-transaction">Relay meta-transaction</a>
                   </li>
               </ul>
           </li>
           <li>
-            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
+            <a href="#shipl-sdk" class="toc-h1 toc-link" data-title="Shipl SDK">Shipl SDK</a>
           </li>
       </ul>
         <ul class="toc-footer">
             <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Fuel API! You can use our API to access Fuel API endpoints, which can process meta-tx and pay ethereum gas cost on behalf of your users.</p>
+<p>Welcome to the Shipl API! You can use our API to process, to verify users, create users proxy-contract, process meta-tx and pay ethereum gas cost on behalf of the users of your dApp.</p>
 
-<p>We have language bindings in Shell, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>The Shipl API is organized around REST. Our API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. JSON is returned by all API responses, including errors. </p>
 
-<p>This example API documentation page was created with <a href="https://github.com/lord/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
+<p>To explore the API as much as possible, we offer testnets environment on rinkeby, kovan and ropsten in addition to the mainnet (mainnet not available yet). Any transfers made in the test environment will never hit the mainnet network or incur any fees. Both testnets and mainnet rely on API keys for authentication.</p>
+
+<p>Be sure to subscribe to Shipl&#39;s API announce mailing list to receive information on new additions and changes to Shipl&#39;s API and language libraries.</p>
+
+<aside class="notice">
+The API is in alpha stage, so features like developer accounts or users management are not yet available but should come before the end of January 2019.
+</aside>
 <h1 id='authentication'>Authentication</h1>
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>Make sure to replace <code>AUTH_TOKEN</code> with your JWT auth token.</p>
 </blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
+<pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
 curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+  -H <span class="s2">"Authorization: Bearer AUTH_TOKEN"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">shipl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Shipl</span><span class="p">({</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">network</span><span class="p">:</span> <span class="s1">'rinkeby'</span> <span class="p">})</span>
+<span class="kr">const</span> <span class="p">{</span> <span class="nx">identity</span><span class="p">,</span> <span class="nx">deviceKey</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">shipl</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">readline</span><span class="p">.</span><span class="nx">question</span><span class="p">)</span>
 </code></pre>
-<blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
-</blockquote>
+<p>Shipl uses JWT token to allow access to the API. Shipl expects to auth token to be included in all secured API requests to the server in a header that looks like the following:</p>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+<p><code>Authorization: Bearer AUTH_TOKEN</code></p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+<p>The JWT token is generated from the following control flow:</p>
 
-<p><code>Authorization: meowmeowmeow</code></p>
+<ol>
+<li><p>The user submits their phone number and recieves a text with a secret</p></li>
+<li><p>Upon successful completion, a JWT token is created and then signed by the nisaba service (becoming a &#39;nisaba token&#39; as referenced in the comments in the code</p></li>
+<li><p>This token is associated with the user and allows them to use the methods of the API and make calls</p></li>
+</ol>
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
-</tr>
-</tbody></table>
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
-</tr>
-</tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -X DELETE
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint deletes a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
-</tr>
-</tbody></table>
+<p>The login method of the Shipl SDK handle the creation/verifcation of the user and the usage of the auth token. You just have to pass a callback function to ask for the phone number and then the code verifcation.</p>
 <h1 id='errors'>Errors</h1>
-<aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
-</aside>
+<p>Shipl uses conventional HTTP response codes to indicate the success or failure of an API request. In general: Codes in the 2xx range indicate success. Codes in the 4xx range indicate an error that failed given the information provided (e.g., a required parameter was omitted, a charge failed, etc.). Codes in the 5xx range indicate an error with Shipl&#39;s servers (these are rare).</p>
 
-<p>The Kittn API uses the following error codes:</p>
+<p>Some 4xx errors that could be handled programmatically include an error code that briefly explains the error reported.</p>
 
 <table><thead>
 <tr>
@@ -444,40 +309,32 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
 </tr>
 </thead><tbody>
 <tr>
+<td>200</td>
+<td>OK -- Everything worked as expected.</td>
+</tr>
+<tr>
 <td>400</td>
-<td>Bad Request -- Your request is invalid.</td>
+<td>Bad Request -- The request was unacceptable, often due to missing a required parameter or not JSON</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
+<td>Unauthorized -- No nisaba token</td>
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
+<td>Forbidden -- Nisaba token missing or invalid</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found -- The specified kitten could not be found.</td>
+<td>Not Found -- The specified path could not be found.</td>
 </tr>
 <tr>
 <td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers.</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&#39;m a teapot.</td>
+<td>Method Not Allowed -- You tried to access an endpoint with an invalid method.</td>
 </tr>
 <tr>
 <td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
+<td>Too Many Requests -- You&#39;re requesting too many transactions! Slow down!</td>
 </tr>
 <tr>
 <td>500</td>
@@ -488,7 +345,200 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
 <td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
 </tr>
 </tbody></table>
+<h1 id='general'>General</h1><h2 id='request-phone-verification'>Request phone verification</h2>
+<p>Starts a verification for a deviceKey and a phoneNumber. Sends a code thru SMS or Call</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>POST https://api.shipl.co/nisaba/verify</code></p>
+<h3 id='body-parameters'>Body Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>deviceKey</td>
+<td>The ethereum address of the user to verify</td>
+</tr>
+<tr>
+<td>phoneNumber</td>
+<td>The phone number of the user to verify</td>
+</tr>
+</tbody></table>
+<pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.shipl.co/nisaba/verify"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
 
+<span class="kr">const</span> <span class="nx">shipl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Shipl</span><span class="p">({</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">network</span><span class="p">:</span> <span class="s1">'rinkeby'</span> <span class="p">})</span>
+<span class="kr">const</span> <span class="p">{</span> <span class="nx">identity</span><span class="p">,</span> <span class="nx">deviceKey</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">shipl</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">readline</span><span class="p">.</span><span class="nx">question</span><span class="p">)</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='verify-and-request-token'>Verify and Request Token</h2>
+<p>With the code (which was sent thru SMS) the app can verify it and request the pseudo-attestation token</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>POST https://api.shipl.co/nisaba/check</code></p>
+<h3 id='body-parameters-2'>Body Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>deviceKey</td>
+<td>The ethereum address of the user to verify</td>
+</tr>
+<tr>
+<td>code</td>
+<td>The code number received by the user at the previous step</td>
+</tr>
+</tbody></table>
+<pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.shipl.co/nisaba/check"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
+
+<span class="kr">const</span> <span class="nx">shipl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Shipl</span><span class="p">({</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">network</span><span class="p">:</span> <span class="s1">'rinkeby'</span> <span class="p">})</span>
+<span class="kr">const</span> <span class="p">{</span> <span class="nx">identity</span><span class="p">,</span> <span class="nx">deviceKey</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">shipl</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">readline</span><span class="p">.</span><span class="nx">question</span><span class="p">)</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;jwt&gt;</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='create-proxy-contract-for-you-users'>Create proxy contract for you users</h2>
+<p>Calls the MetaIdentityManager contract to create the initial controller and proxy contract. The proxy contract is configured to be controlled by the deviceKey. The identity factory is called in the blockchain specified by blockchain body data. If Shipl does not know how to access the blockchain it returns a 404 status.</p>
+
+<p>The endpoint is private, only valid &quot;nisaba tokens&quot; are allowed.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>POST https://api.shipl.co/unnu/createidentity</code></p>
+<h3 id='header'>Header</h3>
+<p><code>Authorization: Bearer &lt;jwt nisaba token&gt;</code></p>
+<h3 id='body-parameters-3'>Body Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>deviceKey</td>
+<td>The ethereum address of the user to verify</td>
+</tr>
+<tr>
+<td>recoveryKey</td>
+<td>By default it&#39;s a Shipl key</td>
+</tr>
+<tr>
+<td>blockchain</td>
+<td>Rinkeby, Ropsten or Kovan</td>
+</tr>
+<tr>
+<td>managerType</td>
+<td>MetaIdentityManager</td>
+</tr>
+</tbody></table>
+<pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.shipl.co/unnu/createidentity"</span>
+  -H Authorization: Bearer &lt;jwt nisaba token&gt;
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
+
+<span class="kr">const</span> <span class="nx">shipl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Shipl</span><span class="p">({</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">network</span><span class="p">:</span> <span class="s1">'rinkeby'</span> <span class="p">})</span>
+<span class="kr">const</span> <span class="p">{</span> <span class="nx">identity</span><span class="p">,</span> <span class="nx">deviceKey</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">shipl</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">readline</span><span class="p">.</span><span class="nx">question</span><span class="p">)</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"managerType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MetaIdentityManager"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"managerAddress"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;address&gt;</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"txHash"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;tx</span><span class="w"> </span><span class="err">hash&gt;</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre><h2 id='lookup-for-user-proxy-contracts'>Lookup for user proxy contracts</h2>
+<p>Look for a proxy contract created by a deviceKey.</p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>POST https://api.shipl.co/unnu/lookup</code></p>
+<h3 id='header-2'>Header</h3>
+<p><code>Authorization: Bearer &lt;jwt nisaba token&gt;</code></p>
+<h3 id='body-parameters-4'>Body Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>deviceKey</td>
+<td>The ethereum address of the user to verify</td>
+</tr>
+</tbody></table>
+<pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.shipl.co/unnu/lookup"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
+
+<span class="kr">const</span> <span class="nx">shipl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Shipl</span><span class="p">({</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">network</span><span class="p">:</span> <span class="s1">'rinkeby'</span> <span class="p">})</span>
+<span class="kr">const</span> <span class="p">{</span> <span class="nx">identity</span><span class="p">,</span> <span class="nx">deviceKey</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">shipl</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">readline</span><span class="p">.</span><span class="nx">question</span><span class="p">)</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"managerType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MetaIdentityManager"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"managerAddress"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;address&gt;</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"identity"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;identity</span><span class="w"> </span><span class="err">address&gt;</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"blockchain"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;blockchain</span><span class="w"> </span><span class="err">name&gt;</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='relay-meta-transaction'>Relay meta-transaction</h2><h3 id='http-request-5'>HTTP Request</h3>
+<p><code>POST https://api.shipl.co/sensui/relay</code></p>
+<h4 id='header-3'>Header</h4><pre class="highlight plaintext"><code>Authorization: Bearer &lt;jwt nisaba token&gt;
+</code></pre><h4 id='body-parameters-5'>Body Parameters</h4>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>metaSignedTx</td>
+<td>The meta signed tx of the user</td>
+</tr>
+<tr>
+<td>blockchain</td>
+<td>Rinkeby, Ropsten or Kovan</td>
+</tr>
+</tbody></table>
+<pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.shipl.co/sensui/relay"</span>
+  -H Authorization: Bearer &lt;jwt nisaba token&gt;
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Web3</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'web3'</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
+
+<span class="kr">const</span> <span class="nx">shipl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Shipl</span><span class="p">({</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">network</span><span class="p">:</span> <span class="s1">'rinkeby'</span> <span class="p">})</span>
+<span class="kr">const</span> <span class="p">{</span> <span class="nx">identity</span><span class="p">,</span> <span class="nx">deviceKey</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">shipl</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">readline</span><span class="p">.</span><span class="nx">question</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">web3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Web3</span><span class="p">(</span><span class="nx">shipl</span><span class="p">.</span><span class="nx">start</span><span class="p">())</span>
+
+<span class="kr">const</span> <span class="nx">dappContract</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">web3</span><span class="p">.</span><span class="nx">eth</span><span class="p">.</span><span class="nx">Contract</span><span class="p">(</span><span class="nx">DAPP_CONTRACT_ADDRESS_ABI</span><span class="p">,</span> <span class="nx">DAPP_CONTRACT_ADDRESS</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">txHash</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">dappContract</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">{</span> <span class="na">from</span><span class="p">:</span> <span class="nx">deviceKey</span> <span class="p">})</span>
+
+<span class="nx">dappContract</span><span class="p">.</span><span class="nx">methods</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">RANDOM_NUMBER</span><span class="p">).</span><span class="nx">send</span><span class="p">({</span> <span class="na">from</span><span class="p">:</span> <span class="nx">deviceKey</span> <span class="p">})</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'transactionHash'</span><span class="p">,</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">transactionHash</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">shipl</span><span class="p">.</span><span class="nx">getInternalTransactionsData</span><span class="p">(</span><span class="nx">abi</span><span class="p">,</span> <span class="nx">txHash</span><span class="p">)</span>
+  <span class="p">})</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"txHash"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;tx</span><span class="w"> </span><span class="err">hash&gt;</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h1 id='shipl-sdk'>Shipl SDK</h1>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
