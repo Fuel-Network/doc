@@ -98,7 +98,9 @@ deviceKey | The ethereum address of the user to verify
 phoneNumber | The phone number of the user to verify
 
 ```shell
-curl "https://api.shipl.co/nisaba/verify"
+curl -X POST  https://api.shipl.co/nisaba/verify \
+-d deviceKey = <device key> \
+-d phoneNumber = <phone number>
 ```
 
 ```javascript
@@ -133,7 +135,9 @@ deviceKey | The ethereum address of the user to verify
 code | The code number received by the user at the previous step
 
 ```shell
-curl "http://api.shipl.co/nisaba/check"
+curl -X POST  https://api.shipl.co/nisaba/check \
+-d deviceKey = <device key> \
+-d code = <verifcation code>
 ```
 
 ```javascript
@@ -174,12 +178,16 @@ Parameter | Description
 --------- | ------- 
 deviceKey | The ethereum address of the user to verify
 recoveryKey | By default it's a Shipl key
-blockchain | Rinkeby, Ropsten or Kovan
+blockchain | Rinkeby, ropsten or kovan
 managerType | MetaIdentityManager
 
 ```shell
-curl "https://api.shipl.co/unnu/createidentity"
-  -H Authorization: Bearer <jwt nisaba token>
+curl -X POST  https://api.shipl.co/unnu/createidentity \
+-H "Authorization: Bearer AUTH_TOKEN"\
+-d deviceKey = <device key> \
+-d recoveryKey = <recovery key> \
+-d blockchain = <blockchain name> \
+-d managerType = "MetaIdentityManager"
 ```
 
 ```javascript
@@ -221,7 +229,9 @@ Parameter | Description
 deviceKey | The ethereum address of the user to verify
 
 ```shell
-curl "https://api.shipl.co/unnu/lookup"
+curl -X POST  https://api.shipl.co/unnu/lookup \
+-H "Authorization: Bearer AUTH_TOKEN"\
+-d deviceKey = <device key>
 ```
 
 ```javascript
@@ -261,11 +271,11 @@ Parameter | Description
 metaSignedTx | The meta signed tx of the user
 blockchain | Rinkeby, Ropsten or Kovan
 
-
-
 ```shell
-curl "https://api.shipl.co/sensui/relay"
-  -H Authorization: Bearer <jwt nisaba token>
+curl -X POST  https://api.shipl.co/sensui/relay \
+-H "Authorization: Bearer AUTH_TOKEN"\
+-d metaSignedTx = <signed meta-transaction>
+-d blockchain = <blockchain name>
 ```
 
 ```javascript
