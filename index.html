@@ -382,7 +382,9 @@ curl <span class="s2">"api_endpoint_here"</span>
 <td>The phone number of the user to verify</td>
 </tr>
 </tbody></table>
-<pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.shipl.co/nisaba/verify"</span>
+<pre class="highlight shell tab-shell"><code>curl -X POST  https://api.shipl.co/nisaba/verify <span class="se">\</span>
+-d deviceKey <span class="o">=</span> &lt;device key&gt; <span class="se">\</span>
+-d phoneNumber <span class="o">=</span> &lt;phone number&gt;
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
 
@@ -415,7 +417,9 @@ curl <span class="s2">"api_endpoint_here"</span>
 <td>The code number received by the user at the previous step</td>
 </tr>
 </tbody></table>
-<pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.shipl.co/nisaba/check"</span>
+<pre class="highlight shell tab-shell"><code>curl -X POST  https://api.shipl.co/nisaba/check <span class="se">\</span>
+-d deviceKey <span class="o">=</span> &lt;device key&gt; <span class="se">\</span>
+-d code <span class="o">=</span> &lt;verifcation code&gt;
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
 
@@ -454,15 +458,19 @@ curl <span class="s2">"api_endpoint_here"</span>
 </tr>
 <tr>
 <td>blockchain</td>
-<td>Rinkeby, Ropsten or Kovan</td>
+<td>Rinkeby, ropsten or kovan</td>
 </tr>
 <tr>
 <td>managerType</td>
 <td>MetaIdentityManager</td>
 </tr>
 </tbody></table>
-<pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.shipl.co/unnu/createidentity"</span>
-  -H Authorization: Bearer &lt;jwt nisaba token&gt;
+<pre class="highlight shell tab-shell"><code>curl -X POST  https://api.shipl.co/unnu/createidentity <span class="se">\</span>
+-H <span class="s2">"Authorization: Bearer AUTH_TOKEN"</span><span class="se">\</span>
+-d deviceKey <span class="o">=</span> &lt;device key&gt; <span class="se">\</span>
+-d recoveryKey <span class="o">=</span> &lt;recovery key&gt; <span class="se">\</span>
+-d blockchain <span class="o">=</span> &lt;blockchain name&gt; <span class="se">\</span>
+-d managerType <span class="o">=</span> <span class="s2">"MetaIdentityManager"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
 
@@ -496,7 +504,9 @@ curl <span class="s2">"api_endpoint_here"</span>
 <td>The ethereum address of the user to verify</td>
 </tr>
 </tbody></table>
-<pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.shipl.co/unnu/lookup"</span>
+<pre class="highlight shell tab-shell"><code>curl -X POST  https://api.shipl.co/unnu/lookup <span class="se">\</span>
+-H <span class="s2">"Authorization: Bearer AUTH_TOKEN"</span><span class="se">\</span>
+-d deviceKey <span class="o">=</span> &lt;device key&gt;
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
 
@@ -531,8 +541,10 @@ curl <span class="s2">"api_endpoint_here"</span>
 <td>Rinkeby, Ropsten or Kovan</td>
 </tr>
 </tbody></table>
-<pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.shipl.co/sensui/relay"</span>
-  -H Authorization: Bearer &lt;jwt nisaba token&gt;
+<pre class="highlight shell tab-shell"><code>curl -X POST  https://api.shipl.co/sensui/relay <span class="se">\</span>
+-H <span class="s2">"Authorization: Bearer AUTH_TOKEN"</span><span class="se">\</span>
+-d metaSignedTx <span class="o">=</span> &lt;signed meta-transaction&gt;
+-d blockchain <span class="o">=</span> &lt;blockchain name&gt;
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Web3</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'web3'</span><span class="p">)</span>
 <span class="kr">const</span> <span class="nx">Shipl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fuel-web3-provider'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readline-sync'</span><span class="p">)</span> <span class="c1">// Callback to ask for the user phone number if the user isn't verified</span>
